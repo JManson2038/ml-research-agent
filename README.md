@@ -2,12 +2,6 @@
 
 AI research agent for mapping the machine learning literature landscape. It fetches papers from arXiv, summarizes each paper with Claude, and clusters related work into themes.
 
-## Demo
-
-> Add a screenshot or animated demo here once you have the UI running.
-
-![Demo placeholder](./demo.png)
-
 ## How it works
 
 1. `src/fetch.py` queries the arXiv API and returns paper metadata for a topic.
