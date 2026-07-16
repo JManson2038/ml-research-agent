@@ -1,0 +1,105 @@
+.app {
+  padding: 48px 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.header h1 {
+  font-size: 36px;
+  margin: 0 0 8px;
+}
+
+.header p {
+  color: var(--text);
+  font-size: 18px;
+}
+
+.search-row {
+  display: flex;
+  gap: 10px;
+  max-width: 250px;
+  margin: 32px auto 32px;}  
+
+.search-row input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.search-row button {
+  padding: 8px 12px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-row button:hover {
+  background: #414040;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  margin: 32px;
+  color: var(--text);
+}
+
+.theme-section {
+  margin-bottom: 48px;
+}
+
+.theme-title {
+  font-size: 20px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+.paper-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.paper-card h3 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.paper-date {
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.paper-tags {
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.paper-summary {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.paper-link {
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.paper-link:hover {
+  text-decoration: underline;
+}
