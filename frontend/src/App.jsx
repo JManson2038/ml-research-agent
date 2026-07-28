@@ -30,14 +30,24 @@ export default function App() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyPress={(e) => { if (e.key === 'Enter') handleSearch(); }}
           placeholder='e.g. "RAG", "diffusion models", "RLHF"'
         />
         <button onClick={handleSearch}>Search</button>
       </div>
-      {loading && <p className="loading">Loading...</p>}
+      {loading && (
+  <div className="spinner-wrapper">
+    <div className="spinner"></div>
+  </div>
+)}
       {results && results.themes && results.themes.map((theme) => (
         <div key={theme.name} className="theme-section">
-          <h2 className="theme-title">{theme.name}</h2>
+          <h2 className="theme-title">{theme.name}
+            <span className="theme-badge">
+              {results.papers.filter(paper => paper.theme === theme.name).length} papers
+            </span>
+          </h2>
+          
           {results.papers
             .filter(paper => paper.theme === theme.name)
             .map(paper => (
