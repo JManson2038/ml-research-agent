@@ -5,6 +5,7 @@ export default function App() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
+  const [sortorder, setSortOrder] = useState('newest'); 
 
   async function handleSearch() {
     console.log('search clicked', query);
@@ -12,7 +13,7 @@ export default function App() {
     const response = await fetch('http://localhost:8000/api/landscape', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: query, max_results: 10 })
+      body: JSON.stringify({ query: query, max_results: 10  })
     });
     const data = await response.json();
     setResults(data.papers);
@@ -35,6 +36,18 @@ export default function App() {
         />
         <button onClick={handleSearch}>Search</button>
       </div>
+      {results && results.themes && (
+        <div className="sort-row">
+          <label htmlFor="sortorder">Sort by:</label>
+          <select value = {sortorder} onChange={(e) => setSortOrder(e.target.value)}>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+          </select>
+        </div>
+      )}
+
+
+
       {loading && (
   <div className="spinner-wrapper">
     <div className="spinner"></div>
@@ -53,6 +66,10 @@ export default function App() {
           
           {results.papers
             .filter(paper => paper.theme === theme.name)
+            .sort ((a, b) => sortorder === 'newest'
+              ? new Date(b.published) - new Date(a.published)
+              : new Date(a.published) - new Date(b.published)
+            )
             .map(paper => (
               <div key={paper.arxiv_id} className="paper-card">
                 <h3>{paper.title}</h3>

@@ -148,7 +148,7 @@
   padding: 8px 20px;
   font-size: 14px;
   background: transparent;
-  color: var(--accent);
+  color: var(--text);
   border: 1px solid var(--accent-border);
   border-radius: 8px;
   cursor: pointer;
@@ -157,4 +157,31 @@
 
 .Reset-button button:hover {
   background: var(--accent-bg);
+}
+
+.sort-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.sort-row label {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.sort-row select {
+  font-size: 14px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  cursor: pointer;
+  outline: none;
+}
+
+.sort-row select:focus {
+  border-color: var(--accent-border);
 }
