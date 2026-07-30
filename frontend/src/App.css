@@ -137,3 +137,24 @@
 .paper-link:hover {
   text-decoration: underline;
 }
+
+.Reset-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.Reset-button button {
+  padding: 8px 20px;
+  font-size: 14px;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.Reset-button button:hover {
+  background: var(--accent-bg);
+}

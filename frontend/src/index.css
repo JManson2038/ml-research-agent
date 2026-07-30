@@ -4,7 +4,7 @@
   --bg: #fff;
   --border: #e5e4e7;
   --accent: #2c2b2c;
-  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-bg: rgba(43, 43, 44, 0.1);
   --accent-border: rgba(101, 101, 102, 0.5);
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   font: 18px/145% var(--sans);

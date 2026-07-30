@@ -39,7 +39,10 @@ export default function App() {
   <div className="spinner-wrapper">
     <div className="spinner"></div>
   </div>
-)}
+
+)} {results && results.themes && (<div className = "Reset-button">
+                <button onClick={() => {setResults([]); setQuery('');}}>Reset</button>
+              </div>)}
       {results && results.themes && results.themes.map((theme) => (
         <div key={theme.name} className="theme-section">
           <h2 className="theme-title">{theme.name}
@@ -58,10 +61,13 @@ export default function App() {
                 <p className="paper-summary">{paper.summary}</p>
                 <a className="paper-link" href={paper.pdf_url} target="_blank">Read paper</a>
               </div>
+              
             ))
           }
+          
         </div>
       ))}
     </div>
   );
+ 
 }
