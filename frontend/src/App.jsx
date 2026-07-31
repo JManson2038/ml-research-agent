@@ -8,12 +8,12 @@ export default function App() {
   const [results, setResults] = useState([]);
   const [sortorder, setSortOrder] = useState('newest');
 
-  async function handleSearch() {
+  async function handleSearch(searchTerm = query) {
     setLoading(true);
     const response = await fetch('http://localhost:8000/api/landscape', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: query, max_results: 10 })
+      body: JSON.stringify({ query: searchTerm, max_results: 10 })
     });
     const data = await response.json();
     setResults(data.papers);
@@ -61,7 +61,7 @@ export default function App() {
               .sort((a, b) => sortorder === 'newest'
                 ? new Date(b.published) - new Date(a.published)
                 : new Date(a.published) - new Date(b.published));
-            return <ThemeCard key={theme.name} theme={theme} papers={sortedPapers} />;
+            return <ThemeCard key={theme.name} theme={theme} papers={sortedPapers} onAuthorClick={handleSearch} />;
           })}
         </>
       )}
