@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import './App.css';
+import ThemeCard from './components/ThemeCard';
 
 export default function App() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
-  const [sortorder, setSortOrder] = useState('newest'); 
+  const [sortorder, setSortOrder] = useState('newest');
 
   async function handleSearch() {
-    console.log('search clicked', query);
     setLoading(true);
     const response = await fetch('http://localhost:8000/api/landscape', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: query, max_results: 10  })
+      body: JSON.stringify({ query: query, max_results: 10 })
     });
     const data = await response.json();
     setResults(data.papers);
@@ -36,55 +36,35 @@ export default function App() {
         />
         <button onClick={handleSearch}>Search</button>
       </div>
-      {results && results.themes && (
-        <div className="sort-row">
-          <label htmlFor="sortorder">Sort by:</label>
-          <select value = {sortorder} onChange={(e) => setSortOrder(e.target.value)}>
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-          </select>
+
+      {loading && (
+        <div className="spinner-wrapper">
+          <div className="spinner"></div>
         </div>
       )}
 
-
-
-      {loading && (
-  <div className="spinner-wrapper">
-    <div className="spinner"></div>
-  </div>
-
-)} {results && results.themes && (<div className = "Reset-button">
-                <button onClick={() => {setResults([]); setQuery('');}}>Reset</button>
-              </div>)}
-      {results && results.themes && results.themes.map((theme) => (
-        <div key={theme.name} className="theme-section">
-          <h2 className="theme-title">{theme.name}
-            <span className="theme-badge">
-              {results.papers.filter(paper => paper.theme === theme.name).length} papers
-            </span>
-          </h2>
-          
-          {results.papers
-            .filter(paper => paper.theme === theme.name)
-            .sort ((a, b) => sortorder === 'newest'
-              ? new Date(b.published) - new Date(a.published)
-              : new Date(a.published) - new Date(b.published)
-            )
-            .map(paper => (
-              <div key={paper.arxiv_id} className="paper-card">
-                <h3>{paper.title}</h3>
-                <p className="paper-date">{paper.published.slice(0, 10)}</p>
-                <p className="paper-tags">{paper.tags.join(', ')}</p>
-                <p className="paper-summary">{paper.summary}</p>
-                <a className="paper-link" href={paper.pdf_url} target="_blank">Read paper</a>
-              </div>
-              
-            ))
-          }
-          
-        </div>
-      ))}
+      {results && results.themes && (
+        <>
+          <div className="sort-row">
+            <label>Sort by:</label>
+            <select value={sortorder} onChange={(e) => setSortOrder(e.target.value)}>
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+            </select>
+          </div>
+          <div className="Reset-button">
+            <button onClick={() => { setResults([]); setQuery(''); }}>Clear results</button>
+          </div>
+          {results.themes.map((theme) => {
+            const sortedPapers = results.papers
+              .filter(paper => paper.theme === theme.name)
+              .sort((a, b) => sortorder === 'newest'
+                ? new Date(b.published) - new Date(a.published)
+                : new Date(a.published) - new Date(b.published));
+            return <ThemeCard key={theme.name} theme={theme} papers={sortedPapers} />;
+          })}
+        </>
+      )}
     </div>
   );
- 
 }
