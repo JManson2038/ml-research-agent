@@ -7,17 +7,30 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [sortorder, setSortOrder] = useState('newest');
+  const [error, setError] = useState(null);
 
   async function handleSearch(searchTerm = query) {
     setLoading(true);
-    const response = await fetch('http://localhost:8000/api/landscape', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: searchTerm, max_results: 10 })
-    });
-    const data = await response.json();
-    setResults(data.papers);
-    setLoading(false);
+    setError(null);
+    try {
+      const response = await fetch('http://localhost:8000/api/landscape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: searchTerm, max_results: 10 })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setResults(data.papers || []);
+    } catch (err) {
+      setError(err.message || 'Failed to fetch results.');
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -42,6 +55,12 @@ export default function App() {
           <div className="spinner"></div>
         </div>
       )}
+
+      {error && (
+  <div className="error-row">
+    <div className="error-message">{error}</div>
+  </div>
+)}
 
       {results && results.themes && (
         <>

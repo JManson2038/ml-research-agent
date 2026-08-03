@@ -199,3 +199,20 @@
 .author-btn:hover {
   opacity: 0.75;
 }
+
+.error-row {
+  display: flex;
+  justify-content: center;
+  margin: 24px auto;
+}
+
+.error-message {
+  max-width: 600px;
+  padding: 16px 20px;
+  border: 1px solid #dc3545;
+  background: rgba(220, 53, 69, 0.08);
+  color: #842029;
+  border-radius: 10px;
+  font-size: 15px;
+  text-align: center;
+}
