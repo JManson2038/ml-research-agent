@@ -30,7 +30,7 @@ export default function App() {
     }, 1200);
 
     try {
-      const response = await fetch('http://localhost:8000/api/landscape', {
+      const response = await fetch('https://ml-research-agent.onrender.com/api/landscape', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: searchTerm, max_results: 10 })
