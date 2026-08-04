@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from fetch import fetch_papers
-from summarize import summarize_papers
-from cluster import cluster_papers
+from src.fetch import fetch_papers
+from src.summarize import summarize_papers
+from src.cluster import cluster_papers
 
 
 app = FastAPI()
