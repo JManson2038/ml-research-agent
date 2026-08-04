@@ -5,6 +5,7 @@ import ThemeCard from './components/ThemeCard';
 export default function App() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
   const [results, setResults] = useState([]);
   const [sortorder, setSortOrder] = useState('newest');
   const [error, setError] = useState(null);
@@ -12,6 +13,22 @@ export default function App() {
   async function handleSearch(searchTerm = query) {
     setLoading(true);
     setError(null);
+    setLoadingMessage('Fetching papers from arxiv...');
+
+    const loadingSteps = [
+      'Fetching papers from arxiv...',
+      'Summarizing with Claude...',
+      'Clustering by theme...'
+    ];
+
+    let stepIndex = 0;
+    const progressTimer = window.setInterval(() => {
+      stepIndex += 1;
+      if (stepIndex < loadingSteps.length) {
+        setLoadingMessage(loadingSteps[stepIndex]);
+      }
+    }, 1200);
+
     try {
       const response = await fetch('http://localhost:8000/api/landscape', {
         method: 'POST',
@@ -29,7 +46,9 @@ export default function App() {
       setError(err.message || 'Failed to fetch results.');
       setResults([]);
     } finally {
+      window.clearInterval(progressTimer);
       setLoading(false);
+      setLoadingMessage('');
     }
   }
 
@@ -53,6 +72,7 @@ export default function App() {
       {loading && (
         <div className="spinner-wrapper">
           <div className="spinner"></div>
+          <div className="loading-status">{loadingMessage}</div>
         </div>
       )}
 
