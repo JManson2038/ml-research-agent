@@ -9,6 +9,11 @@ AI research agent for mapping the machine learning literature landscape. It fetc
 3. `src/cluster.py` builds binary tag vectors and groups papers into themes using KMeans clustering.
 4. `src/api.py` exposes a FastAPI endpoint at `/api/landscape` for the frontend to request a research landscape.
 
+## Live Demo
+
+- **Frontend:** https://ml-research-agent.vercel.app
+- **API:** https://ml-research-agent.onrender.com/docs
+
 ## Setup
 
 1. Clone the repo and enter the project directory.
