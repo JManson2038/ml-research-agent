@@ -2,8 +2,8 @@ import json
 
 from sklearn.cluster import KMeans
 
-from fetch import fetch_papers
-from summarize import summarize_papers
+from src.fetch import fetch_papers
+from src.summarize import summarize_papers
 
 
 def cluster_papers(papers, n_clusters=None):
