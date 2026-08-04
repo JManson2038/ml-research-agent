@@ -2,9 +2,9 @@ import argparse
 import textwrap
 from datetime import datetime
 
-from cluster import cluster_papers
-from fetch import fetch_papers
-from summarize import summarize_papers
+from src.fetch import fetch_papers
+from src.summarize import summarize_papers
+from src.cluster import cluster_papers
 
 
 def build_research_landscape(clustered, width=80):
