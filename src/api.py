@@ -11,7 +11,11 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "https://ml-research-agent.vercel.app",
+        "https://ml-research-agent.onrender.com"
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
