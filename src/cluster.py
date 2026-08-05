@@ -1,12 +1,18 @@
 import json
-
+import voyageai
+import os
+from dotenv import load_dotenv
 from sklearn.cluster import KMeans
-from sentence_transformers import SentenceTransformer
+
 
 from src.fetch import fetch_papers
 from src.summarize import summarize_papers
+    
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+vo = voyageai.Client(api_key=os.getenv("VOYAGE_API_KEY"))
+
+
 
 def cluster_papers(papers, n_clusters=None):
     """Group tagged papers into themes via K-means on binary tag vectors."""
@@ -14,7 +20,7 @@ def cluster_papers(papers, n_clusters=None):
         return {"themes": [], "papers": papers}
 
     embeddings = _embed_summaries(papers)
-    if not embeddings.size:
+    if not embeddings:
         theme = {
             "name": "Uncategorized",
             "description": "No tags available for clustering.",
@@ -40,7 +46,10 @@ def cluster_papers(papers, n_clusters=None):
 
 
 def _embed_summaries(papers):
-    return model.encode([paper["summary"] for paper in papers])
+    summaries = [paper["summary"] for paper in papers]
+    result = vo.embed(summaries, model="voyage-3-lite", input_type="document")
+
+    return result.embeddings
 
 def _default_k(n):
     return min(max(2, n // 2), n)
