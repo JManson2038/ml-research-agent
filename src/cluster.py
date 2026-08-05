@@ -1,18 +1,20 @@
 import json
 
 from sklearn.cluster import KMeans
+from sentence_transformers import SentenceTransformer
 
 from src.fetch import fetch_papers
 from src.summarize import summarize_papers
 
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def cluster_papers(papers, n_clusters=None):
     """Group tagged papers into themes via K-means on binary tag vectors."""
     if not papers:
         return {"themes": [], "papers": papers}
 
-    vocab, vectors = _tag_vectors(papers)
-    if not vocab:
+    embeddings = _embed_summaries(papers)
+    if not embeddings.size:
         theme = {
             "name": "Uncategorized",
             "description": "No tags available for clustering.",
@@ -23,9 +25,9 @@ def cluster_papers(papers, n_clusters=None):
         return {"themes": [theme], "papers": papers}
 
     k = n_clusters or _default_k(len(papers))
-    labels = KMeans(n_clusters=k, n_init="auto", random_state=0).fit_predict(vectors)
+    labels = KMeans(n_clusters=k, n_init="auto", random_state=0).fit_predict(embeddings)
 
-    themes = _build_themes(papers, labels, vocab)
+    themes = _build_themes(papers, labels)
     theme_by_id = {
         arxiv_id: theme["name"]
         for theme in themes
@@ -37,20 +39,15 @@ def cluster_papers(papers, n_clusters=None):
     return {"themes": themes, "papers": papers}
 
 
-def _tag_vectors(papers):
-    vocab = sorted({tag.lower() for paper in papers for tag in paper.get("tags", [])})
-    vectors = []
-    for paper in papers:
-        tags = {tag.lower() for tag in paper.get("tags", [])}
-        vectors.append([1 if tag in tags else 0 for tag in vocab])
-    return vocab, vectors
-
+def _embed_summaries(papers):
+    return model.encode([paper["summary"] for paper in papers])
 
 def _default_k(n):
     return min(max(2, n // 2), n)
 
 
-def _build_themes(papers, labels, vocab):
+def _build_themes(papers, labels):
+    vocab = sorted({tag.lower() for paper in papers for tag in paper.get("tags", [])})
     clusters = {}
     for paper, label in zip(papers, labels):
         clusters.setdefault(label, []).append(paper)
@@ -60,13 +57,11 @@ def _build_themes(papers, labels, vocab):
         cluster_papers = clusters[label]
         top_tags = _top_tags(cluster_papers, vocab)
         name = " / ".join(top_tags) if top_tags else f"Cluster {label + 1}"
-        themes.append(
-            {
-                "name": name,
-                "description": f"Papers tagged with: {', '.join(top_tags)}" if top_tags else "",
-                "arxiv_ids": [p["arxiv_id"] for p in cluster_papers],
-            }
-        )
+        themes.append({
+            "name": name,
+            "description": f"Papers tagged with: {', '.join(top_tags)}" if top_tags else "",
+            "arxiv_ids": [p["arxiv_id"] for p in cluster_papers],
+        })
     return themes
 
 
