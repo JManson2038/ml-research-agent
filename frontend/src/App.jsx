@@ -35,7 +35,7 @@ export default function App() {
       const response = await fetch('https://ml-research-agent.onrender.com/api/landscape', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: searchTerm, max_results: 10, is_author: isAuthor })
+        body: JSON.stringify({ query: searchTerm, max_results: isAuthor ? 15 : 10, is_author: isAuthor })
       });
 
       if (!response.ok) {
