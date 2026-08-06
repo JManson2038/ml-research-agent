@@ -75,6 +75,9 @@ export default function App() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyPress={(e) => { if (e.key === 'Enter') handleSearch(); }}
           placeholder='e.g. "RAG", "diffusion models", "RLHF"'
+          placeholder={searchMode === 'author' 
+            ? 'e.g. "Yoshua Bengio", "Ian Goodfellow"' 
+            : 'e.g. "RAG", "diffusion models", "RLHF"'}
         />
         <button onClick={() => handleSearch()}>Search</button>
       </div>
