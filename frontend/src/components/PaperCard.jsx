@@ -7,7 +7,7 @@ export default function PaperCard({ paper, onAuthorClick })
       <p className="paper-authors">
         {paper.authors.map((author, i) => (
           <span key={i}>
-            <button className="author-btn" onClick={() => onAuthorClick(author)}>
+            <button className="author-btn" onClick={() => onAuthorClick(author, true)}>
               {author}
             </button>
             {i < paper.authors.length - 1 && ', '}

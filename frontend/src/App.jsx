@@ -10,7 +10,7 @@ export default function App() {
   const [sortorder, setSortOrder] = useState('newest');
   const [error, setError] = useState(null);
 
-  async function handleSearch(searchTerm = query) {
+  async function handleSearch(searchTerm = query,isAuthor = false) {
     setLoading(true);
     setError(null);
     setLoadingMessage('Fetching papers from arxiv...');
@@ -33,7 +33,7 @@ export default function App() {
       const response = await fetch('https://ml-research-agent.onrender.com/api/landscape', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: searchTerm, max_results: 10 })
+        body: JSON.stringify({ query: searchTerm, max_results: 10, is_author: isAuthor })
       });
 
       if (!response.ok) {
@@ -66,7 +66,7 @@ export default function App() {
           onKeyPress={(e) => { if (e.key === 'Enter') handleSearch(); }}
           placeholder='e.g. "RAG", "diffusion models", "RLHF"'
         />
-        <button onClick={handleSearch}>Search</button>
+        <button onClick={() => handleSearch()}>Search</button>
       </div>
 
       {loading && (

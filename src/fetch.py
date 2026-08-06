@@ -5,11 +5,16 @@ import xml.etree.ElementTree as ET
 ATOM_NS = {"atom": "http://www.w3.org/2005/Atom"}
 
 
-def fetch_papers(query, max_results=10):
+def fetch_papers(query, max_results=10, is_author=False):
     """Fetch papers from the arXiv API for a search query."""
+    if is_author:
+        formatted = "au:" + query.replace(" ", "_").lower()
+    else:
+        formatted = f"all:{query}"
+
     params = urllib.parse.urlencode(
         {
-            "search_query": query,
+            "search_query": formatted,
             "start": 0,
             "max_results": max_results,
         }

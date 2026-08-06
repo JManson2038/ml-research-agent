@@ -23,10 +23,11 @@ app.add_middleware(
 class LandscapeRequest(BaseModel):
     query: str
     max_results: int = 10
+    is_author: bool = False
 
 @app.post("/api/landscape")
 async def get_landscape(request: LandscapeRequest):
-    papers = fetch_papers(request.query, max_results=request.max_results)
+    papers = fetch_papers(request.query, max_results=request.max_results, is_author=request.is_author)
     summarized_papers = summarize_papers(papers)
     clustered_papers = cluster_papers(summarized_papers)
     return {"papers": clustered_papers}
