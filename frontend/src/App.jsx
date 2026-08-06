@@ -9,8 +9,10 @@ export default function App() {
   const [results, setResults] = useState([]);
   const [sortorder, setSortOrder] = useState('newest');
   const [error, setError] = useState(null);
+  const [searchMode, setSearchMode] = useState('topic'); // 'topic' or 'author'
 
-  async function handleSearch(searchTerm = query,isAuthor = false) {
+
+  async function handleSearch(searchTerm = query, isAuthor = searchMode === 'author') {
     setLoading(true);
     setError(null);
     setLoadingMessage('Fetching papers from arxiv...');
@@ -59,6 +61,14 @@ export default function App() {
         <p>Search any ML topic to map the research landscape</p>
       </div>
       <div className="search-row">
+        <select
+          value={searchMode}
+          onChange={(e) => setSearchMode(e.target.value)}
+          aria-label="Search mode"
+        >
+          <option value="topic">Topic</option>
+          <option value="author">Author</option>
+        </select>
         <input
           type="text"
           value={query}
